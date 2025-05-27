@@ -1,5 +1,5 @@
 import { SchemaTypes, Schema, model } from "mongoose";
-import { IUserDoc, UserStatus } from "./index.types";
+import { IUserDoc, UserRole, UserStatus } from "./index.types";
 
 const UserSchema = new Schema <IUserDoc> ({
     name: {
@@ -12,6 +12,11 @@ const UserSchema = new Schema <IUserDoc> ({
     },
     password: {
         type: SchemaTypes.String,
+    },
+    role: {
+        type: SchemaTypes.String,
+        enum: Object.values(UserRole),
+        default: UserRole.User,
     },
     status: {
         type: SchemaTypes.String,

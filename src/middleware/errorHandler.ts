@@ -2,6 +2,7 @@ import { Request, Response, NextFunction, response } from "express";
 import { ZodError } from "zod";
 import { AppError } from "../utils/AppError";
 import { config } from "../config/config";
+import { error } from "console";
 
 // export interface AppError extends Error {
 //     status?: number
@@ -24,27 +25,26 @@ const errorHandler = (
     res: Response,
     next: NextFunction
 ) => {
+    // do something
     if (err instanceof ZodError) {
-        return res.status(400).json({
-            success: false,
-            message: "Validation Error",
+        res.status(400).json({
+            success: true,
+            message: err.message,
             errors: err.errors.map((e) => ({
-                field: e.path.join("."),
-                message: e.message,
+                field: e.path.join('.'),
+                message: e.message
             }))
         })
     }
 
     const status = err instanceof AppError ? err.status : 500
     const message = err.message || "Internal Server Error"
-
     const isDev = config.nodeEnv != "production"
 
     res.status(status).json({
-        success: false,
         message: message,
-        ...(isDev && {stack: err.stack})
+        ...(isDev && { stack: err.stack })
     })
-
 }
-export default errorHandler;
+
+export default errorHandler

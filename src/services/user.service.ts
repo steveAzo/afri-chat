@@ -5,11 +5,15 @@ import { hash } from "bcryptjs";
 
 export const createUser = async (userData: IUser): Promise<IUserDoc> => {
     const pass_ = userData.password
-    const hashedPassword = await hash(pass_, 10)
+    if (pass_) {
+        const hashedPassword = await hash(pass_, 10)
+        const user = await UserModel.create({...userData, password: hashedPassword})
+        return user
+    }
     
-    const user = await UserModel.create({...userData, password: hashedPassword})
-
+    const user = await UserModel.create(userData)
     return user
+
 }
 
 export const getAllUsers = async ({

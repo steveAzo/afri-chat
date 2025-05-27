@@ -10,6 +10,7 @@ import {
 import { IUser } from "../models/user/index.types";
 import { AppError } from "../utils/AppError";
 import { baseController } from "../utils/baseController";
+import { userCreateSchema } from "../validation/user.validation";
 
 
 // export const createUserController = async (req: Request, res: Response, next: NextFunction) => {
@@ -103,7 +104,9 @@ import { baseController } from "../utils/baseController";
 // }
 
 export const createUserController = baseController(async (req, res, next) => {
+    // const userData: IUser = userCreateSchema.parse(req.body)
     const userData: IUser = req.body
+
     const user = await createUser(userData)
 
     if (!user) {
