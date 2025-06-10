@@ -2,7 +2,6 @@ import { Request, Response, NextFunction, response } from "express";
 import { ZodError } from "zod";
 import { AppError } from "../utils/AppError";
 import { config } from "../config/config";
-import { error } from "console";
 
 // export interface AppError extends Error {
 //     status?: number
@@ -28,7 +27,7 @@ const errorHandler = (
     // do something
     if (err instanceof ZodError) {
         res.status(400).json({
-            success: true,
+            success: false,
             message: err.message,
             errors: err.errors.map((e) => ({
                 field: e.path.join('.'),
